@@ -3,12 +3,19 @@ const renderer = require("./renderer.js");
 const commonHeaders = {'Content-Type': 'text/html'};
 
 function home(req, res) {
-    console.log(req.url);
     if (req.url === "/") {
-        res.writeHead(200, commonHeaders);
-        res.write("Header\n");
-        res.write("Search\n");
-        res.end("Footer\n");
+        if (req.method.toLowerCase() === "get") {
+            console.log("dpopop GAGGAGAG");
+            renderer.renderHeader(res);
+            renderer.renderHome(res);
+
+        } else if (req.method.toLowerCase() === "post") {
+            console.log("nonoicjdisoaj yeye!");
+            res.on("data", postBody => {
+                console.log("djiosajdsioadjsap!!!");
+                console.log(postBody);
+            });
+        }
     }
 }
 
@@ -20,7 +27,7 @@ function user(req, res) {
         // Retrieve user's JSON from Teamtreehouse
         let studentProfile = new Profile(username);
 
-        renderer.renderHeader(res, commonHeaders);
+        renderer.renderHeader(res);
 
         studentProfile.on("end", profileJSON => {
             //console.log("JSON Below")
@@ -36,17 +43,16 @@ function user(req, res) {
 
             console.dir(values);
 
-            renderer.renderHeader(res, commonHeaders);
-            renderer.renderProfile(values, res, username, commonHeaders);
+            renderer.renderHeader(res);
+            renderer.renderProfile(values, res, username);
         });
 
         studentProfile.on("error", (e) => {
             console.error(e);
-            renderer.renderHeader(res, commonHeaders);
-            renderer.renderError(res, commonHeaders, `No content for user "${username}" found in "https://teamtreehouse.com/profiles".`);
+            renderer.renderHeader(res);
+            renderer.renderError(res, `No content for user "${username}" found in "https://teamtreehouse.com/profiles".`);
         });
 
-        //res.end("Footer\n");
     }
 }
 

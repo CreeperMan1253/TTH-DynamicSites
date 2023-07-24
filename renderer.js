@@ -1,4 +1,4 @@
-function renderHeader(res, headers) {
+function renderHeader(res) {
     
     let header = `<!DOCTYPE html>
     <html>
@@ -98,11 +98,24 @@ function renderHeader(res, headers) {
     </head>
     <body>`;
 
-    res.writeHead(200, headers);
     res.write(header);
 }
 
-function renderProfile(values, res, username, headers) {
+function renderHome(res) {
+
+    let home = `<img src="http://i.imgur.com/VKKm0pn.png" alt="Magnifying Glass" id="searchIcon">
+
+    <form action="/" method="POST">
+        <input type="text" placeholder="Enter a Treehouse username" id="username" name="username">
+        <input type="submit" value="search" class="button">
+    </form>`;
+
+    res.write(home);
+    renderFooter(res);
+
+}
+
+function renderProfile(values, res, username) {
     
     let profile = `<div id="profile">
     
@@ -119,10 +132,10 @@ function renderProfile(values, res, username, headers) {
     </div>`;
     
     res.write(profile);
-    renderFooter(res, headers);
+    renderFooter(res);
 }
 
-function renderError(res, headers, errorMessage) {
+function renderError(res, errorMessage) {
 
     let error = `<div id="error">${errorMessage}</div><img src="http://i.imgur.com/VKKm0pn.png" alt="Magnifying Glass" id="searchIcon">
 
@@ -131,19 +144,18 @@ function renderError(res, headers, errorMessage) {
         <input type="submit" value="submit" class="button">
     </form>`;
     
-    console.log("oveuveuveouveo");
     res.write(error);
-    console.log("dsoandoandsoadnisaojojojojojojoj")
-    renderFooter(res, headers);
+    renderFooter(res);
 
 }
 
-function renderFooter(res, headers) {
+function renderFooter(res) {
     let footer = `</body>
     </html>`;
     res.end(footer);
 }
 
 module.exports.renderHeader = renderHeader;
+module.exports.renderHome = renderHome;
 module.exports.renderProfile = renderProfile;
 module.exports.renderError = renderError;
